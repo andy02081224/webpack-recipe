@@ -8,8 +8,11 @@ Webpack是一個模組打包工具，目的是把在JavaScript模組系統下的
 
 ## CSS/SCSS設定
 安裝需要的loader與module
+
 `npm install --save-dev style-loader css-loader sass-loader postcss-loader autoprefixer`
-在這邊sass-loader用來將sass編譯成css，透過postcss-loader與autoprefixer plugin將css轉化(加入瀏覽器prefix)、css-loader讀取分析css檔案，最後透過style-loader將css插入到html的<style>tag當中。
+
+在這邊sass-loader用來將sass編譯成css，透過postcss-loader與autoprefixer plugin將css轉化(加入瀏覽器prefix)、css-loader讀取分析css檔案，最後透過style-loader將css插入到html的style標籤中。
+
 另外可以在loader後加上參數啟用常用的設定:
 - 在css-loader和sass-loader後面加上sourceMap參數啟用sourcemap功能
 - 在css-loader後加上minimize參數啟用Minification
