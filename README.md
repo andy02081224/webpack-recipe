@@ -7,9 +7,11 @@ Webpack是一個模組打包工具，目的是把在JavaScript模組系統下的
 使用`npm init`指令，並依照提示輸入資料後NPM會自動生成package.json。準備好package.json後即可開始安裝local端的webpack：`npm install --save-dev webpack`，雖然webpack可以透過命令列執行，但是為了管理方便，通常會在專案的根目錄下在新增一個webpack專用的設定檔webpack.config.js，接下來所有的webpack設定皆會寫在此檔案中。
 
 ## 設定Babel
-Babel可以將最新標準的JavaScript程式碼編譯為瀏覽器可執行之程式碼，首先安裝需要的套件
+Babel是可以將最新標準的JavaScript程式碼編譯為瀏覽器可執行之程式碼的工具
 
 ##### 基本設定
+
+首先安裝需要的套件
 
 ```
 npm install --save-dev babel-core babel-preset-es2015 babel-loader
