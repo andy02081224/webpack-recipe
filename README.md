@@ -167,5 +167,61 @@ module.exports = {
 }
 ```
 
+## 設定ESLint
 
+安裝所需套件
 
+`npm install --save-dev eslint babel-eslint eslint-loader`
+
+新增ESLint專案設定檔`.eslintrc`，新增`parser` key，value指定為`babel-eslint`，剩下的設定則參考[官網文件](http://eslint.org/docs/user-guide/configuring)自行依據專案設定。
+
+.eslintrc
+```json
+{
+  "extends": "eslint:recommended",
+  "parser": "babel-eslint",
+  "env": {
+    "es6": true,
+    "browser": true,
+    "node": true,
+    "jquery": true,
+    "mocha": true
+  },
+  "ecmaFeatures": {
+    "jsx": true,
+    "modules": true
+  },
+  "rules": {
+    "quotes": 0,
+    "no-console": 0,
+    "no-debugger": 1,
+    "semi": [1, "always"],
+    "no-trailing-spaces": 0,
+    "eol-last": 0,
+    "no-unused-vars": 0,
+    "no-underscore-dangle": 0,
+    "no-alert": 0,
+    "no-lone-blocks": 0,
+    "jsx-quotes": 1
+  }
+}
+
+````
+
+最後在webpack.config.js當中將`eslint-loader`加入`module.preLoaders`並新增`eslint` entry指定global的ESLint設定檔。
+
+webpack.config.js
+```javascript
+module.exports = {
+ module: {
+    preLoaders: [{
+      include: dir_app,
+      test: /\.(js|jsx)$/,
+      loaders:['eslint-loader']
+    }],
+  },
+  eslint: {
+    configFile: './.eslintrc'
+  }
+}
+```
