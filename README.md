@@ -4,7 +4,9 @@ Webpack是一個模組打包工具，目的是把在JavaScript模組系統下的
 - [環境設定](#環境設定)
 - [設定Babel](#設定babel)
 - [設定CSS/SCSS](#設定cssscss)
+- [設定圖片](#設定圖片)
 - [設定ESLint](#設定eslint)
+
 
 ## 環境設定
 ##### 整體設定
@@ -172,6 +174,36 @@ module.exports = {
   }
 }
 ```
+
+## 設定圖片
+安裝url-loader與image-webpack-loader
+
+`npm install --save-dev url-loader image-webpack-loader`
+
+webpack.config.js
+```javascript
+module.exports = {
+ debug: process.env.NODE_ENV == 'development',
+ module: {
+    loaders: [{
+      test: /\.(jpe?g|png|gif|svg)$/i,
+      loaders: [
+      	'url-loader?name=image/[hash].[ext]&limit=8192', 
+      	'image-webpack-loader?bypassOnDebug=true&optimizationLevel=7'
+      	]
+    }]
+ }
+}
+```
+
+使用圖片與其他靜態資源相同，透過import(require)語法即可取得圖片url
+
+```javascript
+import image1Src from 'img/image1.jpg';
+
+const image1 = () => <img src={image1Src} alt="image1" />
+```
+
 
 ## 設定ESLint
 
