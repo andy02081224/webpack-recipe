@@ -6,6 +6,7 @@ Webpack是一個模組打包工具，目的是把在JavaScript模組系統下的
 - [設定CSS/SCSS](#設定cssscss)
 - [設定圖片](#設定圖片)
 - [設定ESLint](#設定eslint)
+- [更彈性的Output路徑](#更彈性的output路徑)
 
 
 ## 環境設定
@@ -263,4 +264,56 @@ module.exports = {
   }
 }
 ```
--
+
+## 更彈性的Output路徑
+Webpack打包後的檔案會直接輸出至使用者指定的output路徑，可是當我想將不同的資源打包到不同的子資料夾中，這樣的設定方式會造成一些麻煩，比如說我想將打包後的JavaScript檔放到名稱叫js的子資料夾當中，而圖片檔則放在名為img的子資料夾，因此將我的ouput路徑已及我的image file-loader設定如下:
+
+```javascript
+module.exports = {
+  entry: {
+    'app': 'path/to/app.js',
+    'vendor': ['react', 'react-dom']
+  },
+  output: {
+    path: '/path/to/build/directory/js',
+    filename: '[name].bundle.js'
+  },
+  module: {
+    loaders: [{
+      include: /path/to/img/directory,
+      test: /\.(jpe?g|png|gif|svg)$/,
+      loaders: ['url-loader?name=img/[hash].[ext]&limit=8192']
+    }]
+  },
+  plugins: [
+    new webpack.optimize.CommonsChunkPlugin('vendor', 'js/vendor.bundle.js'),
+  ]
+}
+```
+
+實際執行後發現Webpack確實會將JavaScript打包至指定的路徑，也就是build資料夾當中的js子資料夾，但url-loader(或是file-loader)卻會根據output的設定將所有的img放在`build/js/img`這樣的路徑下而不是`build/img`，這種把output設定在build資料夾中的子資料夾的方式相比直接設定在build資料夾常常會造成混亂，在網路上查找一陣之後發現有類似的[issue](https://github.com/webpack/webpack/issues/1189)，其中有人提出了解法如下:
+
+```javascript
+module.exports = {
+  entry: {
+    'js/app': 'path/to/app.js', // output: /path/to/build/directory/js/app.bundle.js　
+    'js/vendor': ['react', 'react-dom'] // output: /path/to/build/directory/js/vendor.bundle.js
+  },
+  output: {
+    path: '/path/to/build/directory',
+    filename: '[name].bundle.js'
+  },
+  module: {
+    loaders: [{
+      include: /path/to/img/directory,
+      test: /\.(jpe?g|png|gif|svg)$/,
+      loaders: ['url-loader?name=img/[hash].[ext]&limit=8192']
+    }]
+  },
+  plugins: [
+    new webpack.optimize.CommonsChunkPlugin('js/vendor', 'js/vendor.bundle.js'),
+  ]
+}
+```
+
+output的路徑維持在build資料夾方便其他子資料夾的建立，在entry的部分將檔名加上路徑讓JavaScript檔案可以被打包到js子資料夾。
