@@ -51,6 +51,41 @@ module.exports = {
   }
 }
 ```
+
+##### React相關設定
+Babel可以幫忙轉換JSX，首先安裝需要的preset
+
+```
+npm install --save-dev babel-preset-react
+```
+
+接著在.babelrc裡面將react preset加上去
+
+.babelrc
+```json
+{
+	"presets": ["es2015", "react"],
+}
+```
+
+另外如果想要在class當中使用static語法，需要再加上babel-plugin-transform-class-properties這個plugin
+
+```
+npm install --save-dev babel-plugin-transform-class-properties
+```
+
+在.babelrc裡面加上此plugin
+
+.babelrc
+```json
+{
+	"presets": ["es2015", "react"],
+	"plugins": ["transform-class-properties"] 
+}
+```
+
+
+
 ##### 模擬es6環境以及helpers設定
 上面的提到的基本設定其實指的是對無法用es5去實做之es6功能的轉化，因為根據ES6功能的不同，有些程式碼需要用到轉化，如arrow function，因為其用現有es5程式無法實做出來，因此需要像babel這種compiler將他轉為模擬他的功能、browser看得懂的es5程式碼，而有些功能，如string的一些新的prototype方法，他是有辦法用現有的es5程式碼直接去實作並封裝成新的API，對於這種功能需要的就是所謂的polyfill(shim，如[es6-shim](https://github.com/paulmillr/es6-shim))，他的目的是用現有的標準去模擬es6環境，而在babel當中，這需要手動處理，方法基本上有兩個:
 
@@ -84,7 +119,7 @@ module.exports = {
 .babelrc
 ```json
 {
-	"presets": ['es2015'],
+	"presets": ["es2015"],
 	"plugins": ["transform-runtime"]
 }
 ```
