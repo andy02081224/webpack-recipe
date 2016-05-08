@@ -244,16 +244,23 @@ const image1 = () => <img src={image1Src} alt="image1" />
 ## 設定ESLint
 
 安裝所需套件
+```bash
+npm install --save-dev eslint@2.x babel-eslint@6 eslint-loader
+```
 
-`npm install --save-dev eslint babel-eslint eslint-loader`
-
-新增ESLint專案設定檔`.eslintrc`，新增`parser` key，value指定為`babel-eslint`，剩下的設定則參考[官網文件](http://eslint.org/docs/user-guide/configuring)自行依據專案設定。
+新增ESLint專案設定檔`.eslintrc`，設定如下，Rule設定參考[官網文件](http://eslint.org/docs/user-guide/configuring)自行依據專案設定。
 
 .eslintrc
 ```json
-{
-  "extends": "eslint:recommended",
+{	
   "parser": "babel-eslint",
+  "parserOptions": {
+    "ecmaVersion": 6,
+    "sourceType": "module",
+    "ecmaFeatures": {
+        "jsx": true
+    }
+  },
   "env": {
     "es6": true,
     "browser": true,
@@ -261,23 +268,54 @@ const image1 = () => <img src={image1Src} alt="image1" />
     "jquery": true,
     "mocha": true
   },
-  "ecmaFeatures": {
-    "jsx": true,
-    "modules": true
-  },
+  "extends": [
+    "eslint:recommended"
+  ],
   "rules": {
-    "quotes": 0,
     "no-console": 0,
-    "no-debugger": 1,
-    "semi": [1, "always"],
-    "no-trailing-spaces": 0,
-    "eol-last": 0,
-    "no-unused-vars": 0,
-    "no-underscore-dangle": 0,
-    "no-alert": 0,
-    "no-lone-blocks": 0,
-    "jsx-quotes": 1
+    "no-unused-vars": 1
   }
+}
+
+````
+
+如果要加上React相關的lint規則，可在安裝eslint-plugin-react
+
+```bash
+npm install --save-dev eslint-plugin-react
+```
+
+加上此plugin並使用其推薦的rule
+
+.eslintrc
+```json
+{	
+  "parser": "babel-eslint",
+  "parserOptions": {
+    "ecmaVersion": 6,
+    "sourceType": "module",
+    "ecmaFeatures": {
+        "jsx": true
+    }
+  },
+  "env": {
+    "es6": true,
+    "browser": true,
+    "node": true,
+    "jquery": true,
+    "mocha": true
+  },
+  "extends": [
+    "eslint:recommended", 
+    "plugin:react/recommended"
+  ],
+  "rules": {
+    "no-console": 0,
+    "no-unused-vars": 1
+  },
+  "plugins": [
+    "react"
+  ]
 }
 
 ````
